@@ -1,0 +1,30 @@
+body {
+	background: #fafafa;
+	color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+}
+
+ul {
+    margin: 0;
+}
+
+.container{}
+
+.home-items{}
+
+.home-item{
+	width: 20%;
+	margin-left:2.5%;
+}
+
+.login{
+	width:60%;
+	margin-left:20%;
+	margin-top:2em;
+}
+.login h2{
+	margin-bottom:1em;
+}
