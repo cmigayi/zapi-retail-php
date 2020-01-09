@@ -15,7 +15,7 @@ trait Session{
 
 	public function initializeSessionData($user){
 		$this->user = $user;
-
+		$_SESSION['sess_id'] = session_id();
 		$_SESSION['user_id'] = $this->user->getUserId();
 		$_SESSION['fname'] = $this->user->getFname();
 		$_SESSION['lname'] = $this->user->getLname();
@@ -26,6 +26,7 @@ trait Session{
 		$this->user = new User();
 		
 		$this->user->setUserId($_SESSION['user_id']);
+		$this->user->setUserSession($_SESSION['sess_id']);
 		$this->user->setFname($_SESSION['fname']);
 		$this->user->setLname($_SESSION['lname']);
 		$this->user->setEmail($_SESSION['email']);

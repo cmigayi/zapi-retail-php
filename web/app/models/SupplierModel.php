@@ -125,4 +125,56 @@ class SupplierModel extends Database{
 		}
 		return $this->result;
 	}
+	
+	/**
+	* Handle supplier data update
+	*
+	* @param none
+	* @return array supplier info 
+	*/
+	public function updateSupplier(){
+		$supplierId = $this->supplier->getSupplierId();
+		
+		$this->passedData = array(
+				$this->supplier->getSupplierName(),
+				$this->supplier->getPhone(),
+				$this->supplier->getEmail(),
+				$supplierId
+			);
+
+		$this->supplier = new Supplier();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE suppliers SET supplier_name=?, phone=?, email=? WHERE supplier_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->supplier = $this->getSupplier($supplierId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->supplier;		
+	}
+	
+	/**
+	* Handle supplier data delete
+	*
+	* @param supplier_id
+	* @return boolean 
+	*/
+	public function deleteSupplier($supplierId){
+		$this->passedData = array($supplierId);
+		try{
+			$this->sql = "DELETE FROM suppliers WHERE supplier_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->result;		
+	}
 }

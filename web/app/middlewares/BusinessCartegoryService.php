@@ -10,6 +10,7 @@ namespace App\Middlewares;
 */
 
 use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Data\Service;
 
 class BusinessCartegoryService{
 	private $repo; 
@@ -19,6 +20,14 @@ class BusinessCartegoryService{
 	}
 
 	public function getBusinessCartegoryService($serviceId){
-		return $this->repo->loadBusinessCartegoryService($serviceId);
+		return $this->repo->getBusinessCartegoryService($serviceId);
+	}
+	
+	public function updateBusinessService(Service $service){
+		return $this->repo->updateBusinessService($service);		
+	}
+	
+	public function deleteBusinessService($serviceId){
+		return $this->repo->deleteBusinessService($serviceId);		
 	}
 }

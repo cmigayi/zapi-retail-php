@@ -18,6 +18,7 @@ class User{
 	private $phone;
 	private $username;
 	private $password;
+	private $userSession;
 	private $dateTime;
 
 	public function setUserId($userId){
@@ -74,6 +75,14 @@ class User{
 
 	public function getPassword(){
 		return $this->password;
+	}
+	
+	public function setUserSession($userSession){
+		$this->userSession = $userSession;
+	}
+
+	public function getUserSession(){
+		return $this->userSession;
 	}
 
 	public function setDateTime($dateTime){

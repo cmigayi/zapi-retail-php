@@ -29,7 +29,7 @@ class BusinessModel extends Database{
 		/**
 		* initialize logger
 		*/
-		$this->log = new ErrorLogger('UserModel');
+		$this->log = new ErrorLogger('BusinessModel');
 		$this->log = $this->log->initLog();
 
 		try{
@@ -59,7 +59,7 @@ class BusinessModel extends Database{
 				$this->business->getBusinessType(),
 				$this->business->getBusinessLocation(),
 				$this->business->getBusinessCountry(),			
-				$this->business->getCreatedBy(),
+				$this->business->getOwnerId(),
 				$this->business->getBusinessLogo(),
 				$this->dateTime
 			);
@@ -106,7 +106,7 @@ class BusinessModel extends Database{
 				$this->business->setBusinessType($this->result[0]['business_type']);
 				$this->business->setBusinessLocation($this->result[0]['business_location']);
 				$this->business->setBusinessCountry($this->result[0]['country']);
-				$this->business->setCreatedBy($this->result[0]['created_by']);
+				$this->business->setOwnerId($this->result[0]['owner_id']);
 				$this->business->setBusinessLogo($this->result[0]['logo']);
 				$this->business->setDateTime($this->result[0]['date_time']);
 			}
@@ -123,16 +123,69 @@ class BusinessModel extends Database{
 	* @param int $businessOwnerId($userId) 
 	* @return array business and business role data 
 	*/
-	public function getOwnerBusinesses($businessOwnerId){
-		$this->passedData = array($businessOwnerId,"Owner");
+	public function getOwnerBusinesses($ownerId){
+		$this->passedData = array($ownerId);
 
 		try{						
-			$this->sql = "SELECT * FROM businesses LEFT JOIN business_roles ON businesses.business_id = business_roles.business_id WHERE user_id = ? AND role = ?";
+			$this->sql = "SELECT * FROM businesses WHERE owner_id = ? ";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
 			//logger
 			$this->log->error("Error ".$e->getMessage());
 		}
 		return $this->result;
+	}
+	
+	/**
+	* Handle business data update
+	*
+	* @param none
+	* @return array business info 
+	*/
+	public function updateBusiness(){
+		$businessId = $this->business->getBusinessId();
+		$this->passedData = array(
+				$this->business->getBusinessName(),
+				$this->business->getBusinessType(),
+				$this->business->getBusinessLocation(),
+				$this->business->getBusinessCountry(),	
+				$this->business->getBusinessLogo(),
+				$businessId
+			);
+
+		$this->business = new Business();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE businesses SET business_name=?, business_type=?, business_location=?, country=?, logo=? WHERE business_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->business = $this->getBusiness($businessId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->business;		
+	}
+	
+	/**
+	* Handle business data delete
+	*
+	* @param business_id
+	* @return boolean 
+	*/
+	public function deleteBusiness($businessId){
+		$this->passedData = array($businessId);
+		try{
+			$this->sql = "DELETE FROM businesses WHERE business_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->result;		
 	}
 }

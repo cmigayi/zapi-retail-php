@@ -12,10 +12,11 @@ namespace App\Data;
 class Service{
 	private $serviceId;
 	private $serviceCartegoryId;
+	private $businessId;
+	private $employeeId;
 	private $serviceName;
 	private $serviceDesc;
 	private $fee;
-	private $createdBy;
 	private $dateTime;
 
 	/**
@@ -52,6 +53,32 @@ class Service{
 	*/
 	public function getServiceCartegoryId(){
 		return $this->serviceCartegoryId;
+	}
+	
+	public function setEmployeeId($employeeId){
+		$this->employeeId = $employeeId;
+	}
+
+	public function getEmployeeId(){
+		return $this->employeeId;
+	}
+	
+	/**
+	* setter method
+	*
+	* @param int($id) 
+	*/
+	public function setBusinessId($id){
+		$this->businessId = $id;
+	}
+
+	/**
+	* getter method
+	*
+	* @return int
+	*/
+	public function getBusinessId(){
+		return $this->businessId;
 	}
 
 	/**
@@ -106,24 +133,6 @@ class Service{
 	*/
 	public function getFee(){
 		return $this->fee;
-	}
-
-	/**
-	* setter method
-	*
-	* @param int($createdBy)
-	*/
-	public function setCreatedBy($createdBy){
-		$this->createdBy = $createdBy;
-	}
-
-	/**
-	* getter method
-	*
-	* @return String
-	*/
-	public function getCreatedBy(){
-		return $this->createdBy;
 	}
 
 	/**

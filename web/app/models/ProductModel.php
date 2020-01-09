@@ -48,10 +48,11 @@ class ProductModel extends Database{
 	public function createProduct(){
 		$this->passedData = array(
 				$this->product->getProductCartegoryId(),
+				$this->product->getEmployeeId(),
+				$this->product->getBusinessId(),
 				$this->product->getProductName(),
 				$this->product->getProductDesc(),
 				$this->product->getPrice(),
-				$this->product->getCreatedBy(),
 				$this->dateTime
 			);
 
@@ -59,7 +60,7 @@ class ProductModel extends Database{
 
 		try{
 			$this->pdo->beginTransaction();
-			$this->sql = "INSERT INTO products VALUES(null,?,?,?,?,?,?)";
+			$this->sql = "INSERT INTO products VALUES(null,?,?,?,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$productId = $this->pdo->lastInsertId();
 			$this->product = $this->getProduct($productId);			
@@ -87,10 +88,11 @@ class ProductModel extends Database{
 			}else{
 				$this->product->setProductId($this->result[0]['product_id']);
 				$this->product->setProductCartegoryId($this->result[0]['product_cartegory_id']);
+				$this->product->setEmployeeId($this->result[0]['employee_id']);
+				$this->product->setBusinessId($this->result[0]['business_id']);
 				$this->product->setProductName($this->result[0]['product_name']);
 				$this->product->setProductDesc($this->result[0]['product_desc']);
 				$this->product->setPrice($this->result[0]['product_price']);
-				$this->product->setCreatedBy($this->result[0]['created_by']);
 				$this->product->setDateTime($this->result[0]['date_time']);
 			}
 		}catch(\PDOException $e){
@@ -124,6 +126,60 @@ class ProductModel extends Database{
 		}catch(\PDOException $e){
 			// logger
 			$this->log->error("Error ".$e->getMessage());
+		}
+		return $this->result;
+	}
+	
+	public function getBusinessProducts($businessId){
+		$this->passedData = array($businessId);
+
+		try{
+			$this->sql = "SELECT * FROM products WHERE business_id = ?";
+			$this->result = $this->pdoFetchRows();
+
+		}catch(\PDOException $e){
+			// logger
+			$this->log->error("Error ".$e->getMessage());
+		}
+		return $this->result;
+	}
+	
+	public function updateBusinessProduct(){
+		$productId = $this->product->getProductId();
+		$this->passedData = array(
+				$this->product->getProductCartegoryId(),
+				$this->product->getProductName(),
+				$this->product->getProductDesc(),
+				$this->product->getPrice(),
+				$productId
+			);
+
+		$this->product = new Product();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE products SET product_cartegory_id=?, product_name=?, product_desc=?, product_price=? WHERE product_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->product = $this->getProduct($productId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->product;	
+	}
+	
+	public function deleteBusinessProduct($productId){
+		$this->passedData = array($productId);
+		try{
+			$this->sql = "DELETE FROM products WHERE product_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
 		}
 		return $this->result;
 	}

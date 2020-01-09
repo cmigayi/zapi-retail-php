@@ -10,13 +10,10 @@ $serviceRepo = new ServiceRepository();
 
 $businessCartegoryService = new BusinessCartegoryService($serviceRepo);
 $data = $businessCartegoryService->getBusinessCartegoryService($serviceId);
-//print_r($ownerBusinesses); 
-// Count records found
-$recordCount = 0;	
 
 $main["content"] = array();
 $content["info"] = array();
-$content["businessCartegoryService"] = array();
+$content["service"] = array();
 
 if($data == null){
 	$info["status"] = false;	
@@ -28,7 +25,7 @@ if($data == null){
 $info["records"] = $recordCount;
 
 array_push($content["info"],$info);
-array_push($content["businessCartegoryService"],$data[0]);
+array_push($content["service"],$data[0]);
 array_push($main["content"],$content);
 
 echo json_encode($main, true);

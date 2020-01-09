@@ -80,7 +80,7 @@ class UserModel extends Database{
 			//logger required!
 		}
 		return $this->user;		
-	}	
+	}
 
 	/**
 	* Handle individual user data retrieval based on user_id

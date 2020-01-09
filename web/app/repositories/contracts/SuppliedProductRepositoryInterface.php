@@ -16,4 +16,6 @@ interface SuppliedProductRepositoryInterface{
 	public function createSuppliedProduct(SuppliedProduct $suppliedProduct);
 	
 	public function loadBusinessSuppliedProducts($businessId);
+	
+	public function getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate);
 }

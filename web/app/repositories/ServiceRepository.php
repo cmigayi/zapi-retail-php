@@ -25,11 +25,24 @@ class ServiceRepository implements ServiceRepositoryInterface{
 		return $this->serviceModel->createService();
 	}
 
-	public function loadBusinessCartegoryService($serviceId){
+	public function getBusinessCartegoryService($serviceId){
 		return $this->serviceModel->getBusinessCartegoryService($serviceId);
 	}
 	
 	public function loadBusinessCartegoryServices($serviceCartegoryId){
 		return $this->serviceModel->getBusinessCartegoryServices($serviceCartegoryId);
+	}
+	
+	public function loadBusinessServices($businessId){
+		return $this->serviceModel->getBusinessServices($businessId);
+	}
+	
+	public function updateBusinessService(Service $service){
+		$this->serviceModel->setData($service);
+		return $this->serviceModel->updateBusinessService();
+	}
+	
+	public function deleteBusinessService($serviceId){
+		return $this->serviceModel->deleteBusinessService($serviceId);
 	}
 }

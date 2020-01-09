@@ -5,10 +5,15 @@ use App\Middlewares\Businesses;
 use App\Repositories\BusinessRepository;
 use App\Data\Business;
 
-$userId = 1;
+$verb = $_SERVER['REQUEST_METHOD'];
+$url_pieces = explode('/', $_SERVER['PATH_INFO']);
+if($url_pieces[1] != "zapi-v1"){	
+	return http_response_code(404);
+}
+
+$userId = $url_pieces[3];
 
 $businessRepo = new BusinessRepository();
-
 $businesses = new Businesses($businessRepo);
 $data = $businesses->getOwnerBusinesses($userId);
 //print_r($ownerBusinesses); 
@@ -24,8 +29,8 @@ if($data == null){
 }else{
 	$info["status"] = true;	
 }
-
 $info["records"] = $recordCount;
+$info["session"] = "";
 
 array_push($content["info"],$info);
 array_push($content["businesses"],$data[0]);

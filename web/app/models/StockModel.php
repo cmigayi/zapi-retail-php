@@ -46,8 +46,9 @@ class StockModel extends Database{
 	}
 
 	public function createStock(){
+		$businessId = $this->productStock->getBusinessId();
 		$this->passedData = array(
-				$this->productStock->getBusinessId(),
+				$businessId,
 				$this->productStock->getProductId(),
 				$this->productStock->getQuantity(),
 				$this->dateTime
@@ -60,7 +61,7 @@ class StockModel extends Database{
 			$this->sql = "INSERT INTO product_stocks VALUES(null,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$productStockId = $this->pdo->lastInsertId();
-			$this->productStock = $this->getStock($productStockId);			
+			$this->productStock = $this->getStock($productStockId);	
 			$this->pdo->commit();
 
 		}catch(\PDOException $e){
@@ -95,6 +96,25 @@ class StockModel extends Database{
 		}
 		return $this->productStock;
 	}
+	
+	public function getBusinessStockTotalAmount($businessId){
+		$this->passedData = array($businessId);
+		$this->sql = "SELECT SUM(product_stocks.quantity * products_supplied.unit_price) AS amount FROM product_stocks LEFT JOIN products_supplied ON 
+		product_stocks.product_id = products_supplied.product_id WHERE business_id = ?";
+		
+		try{
+			$this->result = $this->pdoFetchRow();
+			if($this->result == null){
+				$amount = null;
+			}else{
+				$amount = $this->result[0]['amount'];
+			}
+		}catch(\PDOException $e){
+			// logger
+			$this->log->error("Error ".$e->getMessage());
+		}
+		return $amount;
+	}
 
 	public function getBusinessProductsStocks($businessId){
 		$this->passedData = array($businessId);
@@ -107,5 +127,54 @@ class StockModel extends Database{
 			$this->log->error("Error ".$e->getMessage());
 		}
 		return $this->result;
+	}
+	
+	/**
+	* Handle stock data update
+	*
+	* @param none
+	* @return array stock info 
+	*/
+	public function updateStock(){
+		$productStockId = $this->productStock->getStockId();
+		$this->passedData = array(
+				$this->productStock->getQuantity(),
+				$productStockId
+			);
+
+		$this->productStock = new ProductStock();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE product_stocks SET quantity=? WHERE stock_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->productStock = $this->getStock($productStockId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->productStock;		
+	}
+	
+	/**
+	* Handle stock data delete
+	*
+	* @param stockId
+	* @return boolean 
+	*/
+	public function deleteStock($productStockId){
+		$this->passedData = array($productStockId);
+		try{
+			$this->sql = "DELETE FROM product_stocks WHERE stock_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->result;		
 	}
 }

@@ -5,7 +5,15 @@ use App\Middlewares\BusinessInfo;
 use App\Repositories\BusinessRepository;
 use App\Data\Business;
 
-$businessId = 1;
+$verb = $_SERVER['REQUEST_METHOD'];
+$url_pieces = explode('/', $_SERVER['PATH_INFO']);
+if($url_pieces[1] != "zapi-v1"){	
+	return http_response_code(404);
+}
+
+$userId = $url_pieces[3];
+
+$businessId = $url_pieces[5];
 
 $businessRepo = new BusinessRepository();
 
@@ -34,7 +42,7 @@ if($business == null){
 	$data['location'] = $business->getBusinessLocation();
 	$data['country'] = $business->getBusinessCountry();
 	$data['logo'] = $business->getBusinessLogo();
-	$data['created_by'] = $business->getCreatedBy();
+	$data['owner_id'] = $business->getOwnerId();
 	$data['date_time'] = $business->getDateTime();
 }
 

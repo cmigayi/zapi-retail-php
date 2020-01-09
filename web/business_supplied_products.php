@@ -4,7 +4,7 @@ require_once("vendor/autoload.php");
 use App\Middlewares\BusinessSuppliedProducts;
 use App\Repositories\SuppliedProductRepository;
 
-$businessId = 1;
+$businessId = 3;
 
 $suppliedProductRepo = new SuppliedProductRepository();
 

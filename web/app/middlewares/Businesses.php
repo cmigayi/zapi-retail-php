@@ -10,6 +10,7 @@ namespace App\Middlewares;
 */
 
 use App\Repositories\Contracts\BusinessRepositoryInterface;
+use App\Traits\Session;
 
 class Businesses{
 	private $repo; 
@@ -18,8 +19,7 @@ class Businesses{
 		$this->repo = $repo;
 	}
 
-	public function getOwnerBusinesses($ownerId){
+	public function getOwnerBusinesses($ownerId){			
 		return $this->repo->loadOwnerBusinesses($ownerId);
 	}
-
 }

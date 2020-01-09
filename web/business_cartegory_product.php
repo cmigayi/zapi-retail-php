@@ -9,26 +9,22 @@ $productId = 1;
 $productRepo = new ProductRepository();
 
 $businessCartegoryProduct = new BusinessCartegoryProduct($productRepo);
-$data = $businessCartegoryProduct->getBusinessCartegoryProduct($productId);
-//print_r($ownerBusinesses); 
-// Count records found
-$recordCount = 0;	
+$data = $businessCartegoryProduct->getBusinessCartegoryProduct($productId);	
 
 $main["content"] = array();
 $content["info"] = array();
-$content["businessCartegoryProduct"] = array();
+$content["product"] = array();
 
 if($data == null){
-	$info["status"] = false;	
+	$info["status"] = false;
+	$info["records"] = 0;	
 }else{
 	$info["status"] = true;	
-	$recordCount = count($data[0]);
+	$info["records"] = 1;
 }
 
-$info["records"] = $recordCount;
-
 array_push($content["info"],$info);
-array_push($content["businessCartegoryProduct"],$data[0]);
+array_push($content["product"],$data[0]);
 array_push($main["content"],$content);
 
 echo json_encode($main, true);

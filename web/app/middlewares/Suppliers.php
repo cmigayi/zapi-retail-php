@@ -6,19 +6,19 @@ namespace App\Middlewares;
 * @email: migayicecil@gmail.com
 * @copyright: zapi, 2018
 *
-* Fetch business supplier data
+* Fetch business suppliers data
 */
 
 use App\Repositories\Contracts\SupplierRepositoryInterface;
 
-class BusinessSupplier{
+class Suppliers{
 	private $repo; 
 
 	public function __construct(SupplierRepositoryInterface $repo){
 		$this->repo = $repo;
 	}
 
-	public function getBusinessSupplier($businessId){
-		return $this->repo->loadBusinessSupplier($businessId);
+	public function getBusinessSuppliers($businessId){
+		return $this->repo->loadBusinessSuppliers($businessId);
 	}
 }

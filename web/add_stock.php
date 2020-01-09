@@ -13,9 +13,12 @@ $log = new ErrorLogger("add_stock");
 $log = $log->initLog();
 
 //Data validation
+//$businessId = $_POST['business_id'];
 $businessId = 1;
+//$productId = $_POST['prod_id'];
 $productId = 1;
-$quantity = 5;
+//$quantity = $_POST['quantity'];
+$quantity = 3;
 
 //set data
 $productStock->setBusinessId($businessId);

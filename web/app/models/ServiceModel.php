@@ -48,10 +48,11 @@ class ServiceModel extends Database{
 	public function createService(){
 		$this->passedData = array(
 				$this->service->getServiceCartegoryId(),
+				$this->service->getEmployeeId(),
+				$this->service->getBusinessId(),
 				$this->service->getServiceName(),
 				$this->service->getServiceDesc(),
 				$this->service->getFee(),
-				$this->service->getCreatedBy(),
 				$this->dateTime
 			);
 
@@ -59,7 +60,7 @@ class ServiceModel extends Database{
 
 		try{
 			$this->pdo->beginTransaction();
-			$this->sql = "INSERT INTO services VALUES(null,?,?,?,?,?,?)";
+			$this->sql = "INSERT INTO services VALUES(null,?,?,?,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$serviceId = $this->pdo->lastInsertId();
 			$this->service = $this->getService($serviceId);			
@@ -87,10 +88,11 @@ class ServiceModel extends Database{
 			}else{
 				$this->service->setServiceId($this->result[0]['service_id']);
 				$this->service->setServiceCartegoryId($this->result[0]['service_cartegory_id']);
+				$this->service->setEmployeeId($this->result[0]['employee_id']);
+				$this->service->setBusinessId($this->result[0]['business_id']);
 				$this->service->setServiceName($this->result[0]['service_name']);
 				$this->service->setServiceDesc($this->result[0]['service_desc']);
-				$this->service->setFee($this->result[0]['service_price']);
-				$this->service->setCreatedBy($this->result[0]['created_by']);
+				$this->service->setFee($this->result[0]['service_fee']);
 				$this->service->setDateTime($this->result[0]['date_time']);
 			}
 		}catch(\PDOException $e){
@@ -124,6 +126,60 @@ class ServiceModel extends Database{
 		}catch(\PDOException $e){
 			// logger
 			$this->log->error("Error ".$e->getMessage());
+		}
+		return $this->result;
+	}
+	
+	public function getBusinessServices($businessId){
+		$this->passedData = array($businessId);
+
+		try{
+			$this->sql = "SELECT * FROM services WHERE business_id = ?";
+			$this->result = $this->pdoFetchRows();
+
+		}catch(\PDOException $e){
+			// logger
+			$this->log->error("Error ".$e->getMessage());
+		}
+		return $this->result;
+	}
+	
+	public function updateBusinessService(){
+		$serviceId = $this->service->getServiceId();
+		$this->passedData = array(
+				$this->service->getServiceCartegoryId(),
+				$this->service->getServiceName(),
+				$this->service->getServiceDesc(),
+				$this->service->getFee(),
+				$serviceId
+			);
+
+		$this->service = new Service();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE services SET service_cartegory_id=?, service_name=?, service_desc=?, service_fee=? WHERE service_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->service = $this->getService($serviceId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->service;	
+	}
+	
+	public function deleteBusinessService($serviceId){
+		$this->passedData = array($serviceId);
+		try{
+			$this->sql = "DELETE FROM services WHERE service_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
 		}
 		return $this->result;
 	}

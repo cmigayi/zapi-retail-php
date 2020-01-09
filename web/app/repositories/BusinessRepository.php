@@ -20,7 +20,7 @@ class BusinessRepository implements BusinessRepositoryInterface{
 		$this->businessModel = new BusinessModel();
 	}
 
-	public function createBusiness($business){
+	public function createBusiness(Business $business){
 		$this->businessModel->setData($business);
 		return $this->businessModel->createBusiness();
 	}
@@ -29,8 +29,16 @@ class BusinessRepository implements BusinessRepositoryInterface{
 		return $this->businessModel->getBusiness($businessId);
 	}
 
-	public function loadOwnerBusinesses($businessOwnerId){		
-		return $this->businessModel->getOwnerBusinesses($businessOwnerId);
+	public function loadOwnerBusinesses($ownerId){		
+		return $this->businessModel->getOwnerBusinesses($ownerId);
+	}	
+	
+	public function updateBusiness(Business $business){
+		$this->businessModel->setData($business);
+		return $this->businessModel->updateBusiness();
 	}
-
+		
+	public function deleteBusiness($businessId){
+		return $this->businessModel->deleteBusiness($businessId);
+	}
 } 

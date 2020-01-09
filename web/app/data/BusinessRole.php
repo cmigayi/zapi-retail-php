@@ -11,9 +11,10 @@ namespace App\Data;
 
 class BusinessRole{
 	private $businessRoleId;
-	private $userId;
+	private $employeeId;
 	private $businessId;
-	private $businessRole;
+	private $roleLabel;
+	private $rolePrevileges;
 	private $dateTime;
 
 	/**
@@ -37,10 +38,10 @@ class BusinessRole{
 	/**
 	* setter method
 	*
-	* @param int($userId) 
+	* @param int($employeeId) 
 	*/
-	public function setUserId($userId){
-		$this->userId = $userId;
+	public function setEmployeeId($employeeId){
+		$this->employeeId = $employeeId;
 	}
 
 	/**
@@ -48,8 +49,8 @@ class BusinessRole{
 	*
 	* @return int
 	*/
-	public function getUserId(){
-		return $this->userId;
+	public function getEmployeeId(){
+		return $this->employeeId;
 	}
 
 	/**
@@ -73,10 +74,10 @@ class BusinessRole{
 	/**
 	* setter method
 	*
-	* @param String($businessRole) 
+	* @param String($roleLabel) 
 	*/
-	public function setBusinessRole($businessRole){
-		$this->businessRole= $businessRole;
+	public function setRoleLabel($roleLabel){
+		$this->roleLabel = $roleLabel;
 	}
 
 	/**
@@ -84,8 +85,26 @@ class BusinessRole{
 	*
 	* @return String
 	*/
-	public function getBusinessRole(){
-		return $this->businessRole;
+	public function getRoleLabel(){
+		return $this->roleLabel;
+	}
+
+	/**
+	* setter method
+	*
+	* @param String($rolePrevileges) 
+	*/
+	public function setRolePrevileges($rolePrevileges){
+		$this->rolePrevileges = $rolePrevileges;
+	}
+
+	/**
+	* getter method
+	*
+	* @return String
+	*/
+	public function getRolePrevileges(){
+		return $this->rolePrevileges;
 	}	
 
 	/**

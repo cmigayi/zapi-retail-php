@@ -30,7 +30,7 @@ class Username{
 	*/
 	public function validUsername(){
 		if(empty($this->username)){
-			$this->log->error("Username cannot be empty!");
+			//$this->log->error("Username cannot be empty!");
 			throw new \Exception("Username cannot be empty!");
 		}
 		return $this->username;

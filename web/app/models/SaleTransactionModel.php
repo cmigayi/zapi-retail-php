@@ -106,7 +106,7 @@ class SaleTransactionModel extends Database{
 		$this->passedData = array($businessId);
 
 		try{						
-			$this->sql = "SELECT * FROM sales_transactions LEFT JOIN sales_credit ON sales_transactions.transaction_number = sales_credit.transaction_number WHERE sales_transactions.business_id = ?";
+			$this->sql = "SELECT * FROM sales_transactions LEFT JOIN sales_credit ON sales_transactions.transaction_number = sales_credit.transaction_number LEFT JOIN businesses ON sales_transactions.business_id = businesses.business_id WHERE sales_transactions.business_id = ?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
 			//logger

@@ -15,7 +15,13 @@ interface ServiceRepositoryInterface{
 
 	public function createService(Service $service);
 
-	public function loadBusinessCartegoryService($serviceId);
+	public function getBusinessCartegoryService($serviceId);
 	
 	public function loadBusinessCartegoryServices($serviceCartegoryId);
+	
+	public function loadBusinessServices($businessId);
+	
+	public function updateBusinessService(Service $service);
+	
+	public function deleteBusinessService($serviceId);
 }

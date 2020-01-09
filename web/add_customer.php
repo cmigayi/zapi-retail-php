@@ -10,13 +10,21 @@ $customer = new Customer();
 $customerRepository = new CustomerRepository();
 
 //Data validation
-$fname = "Moe";
-$lname = "Jay";
-$email = "hm@gmail.com";
-$phone = "0745617089";
-$nationalId = "23456789";
+//$employeeId = $_POST['employee_id'];
+$employeeId = 1;
+//$fname = $_POST['fname'];
+$fname = "Jack";
+//$lname = $_POST['lname'];
+$lname = "Newton";
+//$email = $_POST['email'];
+$email = "jn@gmil.com";
+//$phone = $_POST['phone'];
+$phone = "0734567";
+//$nationalId = $_POST['nat_id'];
+$nationalId = "54567567";
 
 //set data
+$customer->setBusinessId($employeeId);
 $customer->setFname($fname);
 $customer->setLname($lname);
 $customer->setEmail($email);
@@ -26,4 +34,28 @@ $customer->setNationalId($nationalId);
 //set repository
 $addCustomer = new AddCustomer($customerRepository);
 $customer = $addCustomer->createCustomer($customer);
-echo $customer->getCustomerId()." ".$customer->getFname();
+
+if($customer == null){
+	$info["status"] = false;
+	$info["results"] = 0;
+}else{	
+	$info["status"] = true;
+	$info["results"] = 1;
+	$data["customer_id"] = $customer->getCustomerId();  
+	$data["business_id"] = $customer->getBusinessId();  
+	$data["fname"] = $customer->getFname();  
+	$data["lname"] = $customer->getLname();  
+	$data["email"] = $customer->getEmail();  
+	$data["phone"] = $customer->getPhone();  
+	$data["national_id"] = $customer->getNationalId();    
+	$data["date_time"] = $customer->getDateTime(); 	
+}
+$content["info"] = array();
+$content["customer"] = array();
+$main["content"] = array();
+
+array_push($content["info"], $info);
+array_push($content["customer"], $data);
+array_push($main["content"], $content);
+
+echo json_encode($main, true);

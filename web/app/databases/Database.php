@@ -47,6 +47,8 @@ class Database{
 		$this->pdo = null;
 		$this->row = null;
 		$this->rows = null;
+		$this->passedData = null;
+		$this->sql = null;
 	}
 
 	/**
@@ -112,6 +114,8 @@ class Database{
 		$this->stmt = $this->pdo->prepare($this->sql);
 		$this->stmt->execute($this->passedData);
 		$this->row = $this->stmt->fetchAll();
+		$this->stmt = null;
+		$this->sql = null;
 		return $this->row;
 	}
 
@@ -126,6 +130,8 @@ class Database{
 		while($this->row = $this->stmt->fetchAll()){
 			$this->rows[] = $this->row;
 		}
+		$this->stmt = null;
+		$this->sql = null;
 		return $this->rows;
 	} 
 }

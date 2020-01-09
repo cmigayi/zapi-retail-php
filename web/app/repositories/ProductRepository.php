@@ -25,11 +25,24 @@ class ProductRepository implements ProductRepositoryInterface{
 		return $this->productModel->createProduct();
 	}
 
-	public function loadBusinessCartegoryProduct($productId){
+	public function getBusinessCartegoryProduct($productId){
 		return $this->productModel->getBusinessCartegoryProduct($productId);
 	}
 	
 	public function loadBusinessCartegoryProducts($productCartegoryId){
 		return $this->productModel->getBusinessCartegoryProducts($productCartegoryId);
+	}
+	
+	public function loadBusinessProducts($businessId){
+		return $this->productModel->getBusinessProducts($businessId);
+	}
+	
+	public function updateBusinessProduct(Product $product){
+		$this->productModel->setData($product);
+		return $this->productModel->updateBusinessProduct();
+	}
+	
+	public function deleteBusinessProduct($productId){
+		return $this->productModel->deleteBusinessProduct($productId);
 	}
 }

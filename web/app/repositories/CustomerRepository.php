@@ -30,5 +30,22 @@ class CustomerRepository implements CustomerRepositoryInterface{
 		$this->customerModel->setData($customer);
 		return $this->customerModel->createCustomer();
 	} 
+	
+	public function getCustomer($customerId){
+		return $this->customerModel->getCustomer($customerId);
+	}
+	
+	public function loadBusinessCustomers($businessId){
+		return $this->customerModel->getBusinessCustomers($businessId);
+	}
+	
+	public function updateCustomer(Customer $customer){
+		$this->customerModel->setData($customer);
+		return $this->customerModel->updateCustomer();
+	}
+	
+	public function deleteCustomer($customerId){
+		return $this->customerModel->deleteCustomer($customerId);
+	}
 
 }

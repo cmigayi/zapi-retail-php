@@ -14,8 +14,14 @@ use App\Data\Supplier;
 interface SupplierRepositoryInterface{
 
 	public function createSupplier(Supplier $supplier);
+	
+	public function getSupplier($supplierId);
 
-	public function loadBusinessSupplier($businessId);
+	public function getBusinessSupplier($businessId);
 	
 	public function loadBusinessSuppliers($businessId);
+	
+	public function updateSupplier(Supplier $supplier);
+	
+	public function deleteSupplier($supplierId);
 }

@@ -25,7 +25,20 @@ class ProductStockRepository implements ProductStockRepositoryInterface{
 		return $this->stockModel->createStock();
 	}
 	
+	public function getStock($productStockId){
+		return $this->stockModel->getStock($productStockId);
+	}
+	
 	public function loadBusinessProductsStocks($businessId){
 		return $this->stockModel->getBusinessProductsStocks($businessId);
+	}
+	
+	public function updateStock(ProductStock $productStock){
+		$this->stockModel->setData($productStock);
+		return $this->stockModel->updateStock();
+	}
+	
+	public function deleteStock($productStockId){
+		return $this->stockModel->deleteStock($productStockId);
 	}
 }

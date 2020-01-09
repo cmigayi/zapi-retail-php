@@ -8,7 +8,7 @@ namespace App\Middlewares;
 *
 * Fetch business data
 */
-
+use App\Data\Business;
 use App\Repositories\Contracts\BusinessRepositoryInterface;
 
 class BusinessInfo{
@@ -21,5 +21,12 @@ class BusinessInfo{
 	public function getBusiness($businessId){
 		return $this->repo->loadBusiness($businessId);
 	}
-
+	
+	public function updateBusiness(Business $business){
+		return $this->repo->updateBusiness($business);
+	}
+	
+	public function deleteBusiness($businessId){
+		return $this->repo->deleteBusiness($businessId);
+	}
 }

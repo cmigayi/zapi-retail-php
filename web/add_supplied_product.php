@@ -15,10 +15,10 @@ $log = $log->initLog();
 //Data validation
 $productId = 1;
 $supplierId = 1;
-$businessId = 1;
-$quantity = 5;
-$unitPrice = 500;
-$paymentStatus = "Credit";
+$businessId = 3;
+$quantity = 7;
+$unitPrice = 110;
+$paymentStatus = "Cash";
 
 //set data
 $suppliedProduct->setProductId($productId);

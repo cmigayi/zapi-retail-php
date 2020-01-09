@@ -45,6 +45,7 @@ class CustomerModel extends Database{
 	*/
 	public function createCustomer(){
 		$this->passedData = array(
+				$this->customer->getBusinessId(),
 				$this->customer->getFname(),
 				$this->customer->getLname(),
 				$this->customer->getNationalId(),
@@ -57,7 +58,7 @@ class CustomerModel extends Database{
 
 		try{
 			$this->pdo->beginTransaction();
-			$this->sql = "INSERT INTO customers VALUES(null,?,?,?,?,?,?)";
+			$this->sql = "INSERT INTO customers VALUES(null,?,?,?,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$customerId = $this->pdo->lastInsertId();
 			$this->customer = $this->getCustomer($customerId);
@@ -97,5 +98,58 @@ class CustomerModel extends Database{
 			// logger required
 		}
 		return $this->customer;
+	}
+	
+	public function getBusinessCustomers($businessId){
+		$this->passedData = array($businessId);
+		try{
+			$this->sql = "SELECT * FROM customers WHERE business_id=?";
+			$this->result = $this->pdoFetchRows();
+		}catch(\PDOException $e){
+			//logger
+			$this->log->error("Error ".$e->getMessage());
+		}
+		return $this->result;
+	}
+	
+	public function updateCustomer(){
+		$customerId = $this->customer->getCustomerId();
+		$this->passedData = array(
+				$this->customer->getFname(),
+				$this->customer->getLname(),
+				$this->customer->getNationalId(),
+				$this->customer->getPhone(),
+				$this->customer->getEmail(),
+				$customerId
+			);
+
+		$this->customer = new Customer();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE customers SET fname=?,lname=?,national_id=?,phone=?,email=? WHERE customer_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->customer = $this->getCustomer($customerId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->customer;		
+	}
+	
+	public function deleteCustomer($customerId){
+		$this->passedData = array($customerId);
+		try{
+			$this->sql = "DELETE FROM customers WHERE customer_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->result;		
 	}
 }

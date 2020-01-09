@@ -24,12 +24,52 @@ class BusinessRoleRepository implements BusinessRoleRepositoryInterface{
 		$this->businessRoleModel->setData($businessRole);
 		return $this->businessRoleModel->createBusinessRole();
 	}
-
-	public function loadBusinessAgent($businessId,$userId){
-		return $this->businessRoleModel->getBusinessAgent($businessId,$userId);
+	
+	/**
+	* Get roles in specific business
+	* 
+	* @param pass int($businessId)
+	*/
+	public function getBusinessRoles($businessId){
+		return $this->businessRoleModel->getBusinessRoles($businessId);				
 	}
 	
-	public function loadBusinessAgents($businessId){
-		return $this->businessRoleModel->getBusinessAgents($businessId);
+	/**
+	* Get roles for specific business
+	* 
+	* @param pass int($businessId)
+	*/
+	public function getBusinessRole($businessRoleId){
+		return $this->businessRoleModel->getBusinessRole($businessRoleId);
+	}
+	
+	/**
+	* Get role for specific employee
+	* 
+	* @param pass int($employeeId)
+	*/
+	public function getEmployeeRole($employeeId){
+		return $this->businessRoleModel->getEmployeeRole($employeeId);
+	}
+	
+	/**
+	* Handle specific business role data update
+	*
+	* @param none
+	* @return business role info 
+	*/
+	public function updateBusinessRole(BusinessRole $businessRole){
+		$this->businessRoleModel->setData($businessRole);
+		return $this->businessRoleModel->updateBusinessRole();
+	}
+	
+	/**
+	* Handle specific business role data delete
+	*
+	* @param businessRoleId
+	* @return boolean 
+	*/
+	public function deleteBusinessRole($businessRoleId){
+		return $this->businessRoleModel->deleteBusinessRole($businessRoleId);
 	}
 } 

@@ -28,4 +28,8 @@ class SuppliedProductRepository implements SuppliedProductRepositoryInterface{
 	public function loadBusinessSuppliedProducts($businessId){
 		return $this->suppliedProductModel->getBusinessSuppliedProducts($businessId);
 	}
+	
+	public function getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate){
+		return $this->suppliedProductModel->getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate);
+	}
 }

@@ -4,7 +4,7 @@ require_once("vendor/autoload.php");
 use App\Middlewares\BusinessSalesTransactions;
 use App\Repositories\SaleTransactionRepository;
 
-$businessId = 1;
+$businessId = 1; //$_POST['business_id'];
 
 $saleTransactionRepo = new SaleTransactionRepository();
 

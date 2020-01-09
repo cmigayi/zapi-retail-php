@@ -60,7 +60,7 @@ class SuppliedProductModel extends Database{
 
 		try{
 			$this->pdo->beginTransaction();
-			$this->sql = "INSERT INTO supplied_products VALUES(null,?,?,?,?,?,?,?)";
+			$this->sql = "INSERT INTO products_supplied VALUES(null,?,?,?,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$suppliedProductId = $this->pdo->lastInsertId();
 			$this->suppliedProduct = $this->getSuppliedProduct($suppliedProductId);			
@@ -75,7 +75,7 @@ class SuppliedProductModel extends Database{
 
 	public function getSuppliedProduct($suppliedProductId){
 		$this->passedData = array($suppliedProductId);
-		$this->sql = "SELECT * FROM supplied_products WHERE supplied_product_id = ?";
+		$this->sql = "SELECT * FROM products_supplied WHERE supplied_product_id = ?";
 
 		$this->suppliedProduct =  new SuppliedProduct();
 
@@ -106,12 +106,34 @@ class SuppliedProductModel extends Database{
 		$this->passedData = array($businessId);
 
 		try{						
-			$this->sql = "SELECT * FROM supplied_products LEFT JOIN products ON supplied_products.product_id = products.product_id LEFT JOIN suppliers ON supplied_products.supplier_id = suppliers.supplier_id WHERE supplied_products.business_id = ?";
+			$this->sql = "SELECT * FROM products_supplied LEFT JOIN products ON products_supplied.product_id = products.product_id LEFT JOIN suppliers ON products_supplied.supplier_id = suppliers.supplier_id WHERE products_supplied.business_id = ?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
 			//logger
 			$this->log->error("Error ".$e->getMessage());
 		}
 		return $this->result;
+	}
+	
+	public function getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate){
+		$this->passedData = array(
+			$businessId,
+			$startDate, 
+			$endDate
+		);
+
+		try{						
+			$this->sql = "SELECT SUM(quantity*unit_price) AS amount FROM products_supplied WHERE business_id = ? AND (date_time BETWEEN ? AND ?)";
+			$this->result = $this->pdoFetchRow();
+			if($this->result === null){
+				$amount = null;
+			}else{
+				$amount = $this->result[0]['amount'];
+			}
+		}catch(\PDOException $e){
+			//logger
+			$this->log->error("Error ".$e->getMessage());
+		}
+		return $amount;
 	}
 }

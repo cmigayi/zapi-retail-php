@@ -24,12 +24,25 @@ class SupplierRepository implements SupplierRepositoryInterface{
 		$this->supplierModel->setData($supplier);
 		return $this->supplierModel->createSupplier();
 	}
+	
+	public function getSupplier($supplierId){
+		return $this->supplierModel->getSupplier($supplierId);
+	}
 
-	public function loadBusinessSupplier($businessId){
+	public function getBusinessSupplier($businessId){
 		return $this->supplierModel->getBusinessSupplier($businessId);
 	}
 	
 	public function loadBusinessSuppliers($businessId){
 		return $this->supplierModel->getBusinessSuppliers($businessId);
+	}
+	
+	public function updateSupplier(Supplier $supplier){
+		$this->supplierModel->setData($supplier);
+		return $this->supplierModel->updateSupplier();		
+	}
+	
+	public function deleteSupplier($supplierId){		
+		return $this->supplierModel->deleteSupplier($supplierId);
 	}
 }

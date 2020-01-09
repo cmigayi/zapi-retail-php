@@ -10,6 +10,7 @@ namespace App\Middlewares;
 */
 
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Data\Product;
 
 class BusinessCartegoryProduct{
 	private $repo; 
@@ -19,6 +20,14 @@ class BusinessCartegoryProduct{
 	}
 
 	public function getBusinessCartegoryProduct($productId){
-		return $this->repo->loadBusinessCartegoryProduct($productId);
+		return $this->repo->getBusinessCartegoryProduct($productId);
+	}
+	
+	public function updateBusinessProduct(Product $product){
+		return $this->repo->updateBusinessProduct($product);		
+	}
+	
+	public function deleteBusinessProduct($productId){
+		return $this->repo->deleteBusinessProduct($productId);		
 	}
 }

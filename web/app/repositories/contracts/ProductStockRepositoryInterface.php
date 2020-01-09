@@ -15,5 +15,11 @@ interface ProductStockRepositoryInterface{
 
 	public function createProductStock(ProductStock $productStock);
 	
+	public function getStock($productStockId);
+	
 	public function loadBusinessProductsStocks($businessId);
+	
+	public function updateStock(ProductStock $productStock);
+	
+	public function deleteStock($productStockId);
 }

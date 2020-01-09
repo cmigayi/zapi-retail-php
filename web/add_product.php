@@ -4,36 +4,59 @@ require_once("vendor/autoload.php");
 use App\Data\Product;
 use App\Repositories\ProductRepository; 
 use App\Middlewares\AddProduct;
-use App\Common\ErrorLogger;
 
 //initialize objects
 $product = new Product();
 $productRepository = new ProductRepository();
-$log = new ErrorLogger("add_product");
-$log = $log->initLog();
+$addProduct = new AddProduct($productRepository);
 
 //Data validation
+//$productCartegoryId = $_POST['prod_cartegory'];
 $productCartegoryId = 1;
-$productName = "Panadol";
+//$employeeId = $_POST['employee_id'];
+$employeeId = 1;
+//$businessId = $_POST['business_id'];
+$businessId = 3;
+//$productName = $_POST['prod_name'];
+$productName = "Mango";
+//$productDesc = $_POST['desc'];
 $productDesc = "";
-$price = 40;
-$createdBy = 1;
+//$price = $_POST['price'];
+$price = 500;
 
 //set data
 $product->setProductCartegoryId($productCartegoryId);
+$product->setEmployeeId($employeeId);
+$product->setBusinessId($businessId);
 $product->setProductName($productName);
 $product->setProductDesc($productDesc);
 $product->setPrice($price);
-$product->setCreatedBy($createdBy);
 
-//set repository
-$addProduct = new AddProduct($productRepository);
+$product = $addProduct->createProduct($product);
 
-try{
-	$product = $addProduct->createProduct($product);
-	echo $product->getProductId()." ".$product->getProductName();
+$main["content"] = array();
+$content["info"] = array();
+$content["product"] = array();
 
-}catch(\Exception $e){
-	// logger
-	$log->error("Error ".$e->getMessage());
+if($product == null){
+	$info["status"] = false;
+	$info["records"] = 0;	
+}else{
+	$info["status"] = true;	
+	$info["records"] = 1;
+	
+	$data['product_id'] = $product->getProductId(); 
+	$data['product_cartegory_id'] = $product->getProductCartegoryId(); 
+	$data['employee_id'] = $product->getEmployeeId(); 
+	$data['business_id'] = $product->getBusinessId(); 
+	$data['product_name'] = $product->getProductName(); 
+	$data['product_desc'] = $product->getProductDesc(); 
+	$data['fee'] = $product->getPrice(); 
+	$data['date_time'] = $product->getDateTime(); 
 }
+
+array_push($content["info"],$info);
+array_push($content["product"],$data);
+array_push($main["content"],$content);
+
+echo json_encode($main, true);	

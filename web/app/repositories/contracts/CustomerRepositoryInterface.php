@@ -18,5 +18,13 @@ interface CustomerRepositoryInterface{
 	*
 	* @param pass customer data to be stored
 	*/
-	public function createCustomer(Customer $user); 
+	public function createCustomer(Customer $customer); 
+	
+	public function getCustomer($customerId);
+	
+	public function loadBusinessCustomers($businessId);
+	
+	public function updateCustomer(Customer $customer);
+	
+	public function deleteCustomer($customerId);
 }

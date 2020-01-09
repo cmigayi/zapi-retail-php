@@ -16,7 +16,7 @@ class Business{
 	private $businessLocation;
 	private $businessCountry;
 	private $businessLogo;
-	private $createdBy;
+	private $ownerId;
 	private $dateTime;
 
 	/**
@@ -130,10 +130,10 @@ class Business{
 	/**
 	* setter method
 	*
-	* @param int($createdBy) 
+	* @param int($ownerId) 
 	*/
-	public function setCreatedBy($createdBy){
-		$this->createdBy = $createdBy;
+	public function setOwnerId($ownerId){
+		$this->ownerId = $ownerId;
 	}
 
 	/**
@@ -141,8 +141,8 @@ class Business{
 	*
 	* @return int
 	*/
-	public function getCreatedBy(){
-		return $this->createdBy;
+	public function getOwnerId(){
+		return $this->ownerId;
 	}
 
 	/**

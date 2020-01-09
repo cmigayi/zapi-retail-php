@@ -15,7 +15,13 @@ interface ProductRepositoryInterface{
 
 	public function createProduct(Product $product);
 
-	public function loadBusinessCartegoryProduct($productId);
+	public function getBusinessCartegoryProduct($productId);
 	
 	public function loadBusinessCartegoryProducts($productCartegoryId);
+	
+	public function loadBusinessProducts($businessId);
+	
+	public function updateBusinessProduct(Product $product);
+	
+	public function deleteBusinessProduct($productId);
 }

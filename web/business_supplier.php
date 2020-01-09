@@ -1,15 +1,15 @@
 <?php
 require_once("vendor/autoload.php");
 
-use App\Middlewares\BusinessSupplier;
+use App\Middlewares\SupplierInfo;
 use App\Repositories\SupplierRepository;
 
 $businessId = 1;
 
 $supplierRepo = new SupplierRepository();
 
-$businessSupplier = new BusinessSupplier($supplierRepo);
-$data = $businessSupplier->getBusinessSupplier($businessId);
+$supplierInfo = new SupplierInfo($supplierRepo);
+$data = $supplierInfo->getSupplier($businessId);
 //print_r($ownerBusinesses); 
 // Count records found
 $recordCount = 0;	

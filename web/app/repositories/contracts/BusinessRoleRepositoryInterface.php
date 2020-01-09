@@ -8,6 +8,7 @@ namespace App\Repositories\Contracts;
 *
 * Contract to business role repository
 */
+use App\Data\BusinessRole;
 
 interface BusinessRoleRepositoryInterface{
 
@@ -17,22 +18,43 @@ interface BusinessRoleRepositoryInterface{
 	* @param $businessRole object
 	* @return BusinessRole object
 	*/
-	public function createBusinessRole($businessRole);
-
-	/**	
-	* load business agent data
-	*
-	* @param int $businessId, int $userId (agent) 
-	* @return array businessRoles and user
+	public function createBusinessRole($businessRole);	
+	
+	/**
+	* Get roles in specific business
+	* 
+	* @param pass int($businessRoleId)
 	*/
-	public function loadBusinessAgent($businessId,$userId);
-
-	/**	
-	* load business agents
-	*
-	* @param int $businessId 
-	* @return array businessRoles and user
+	public function getBusinessRoles($businessId);
+	
+	/**
+	* Get roles for specific business
+	* 
+	* @param pass int($businessId)
 	*/
-	public function loadBusinessAgents($businessId);	
+	public function getBusinessRole($businessRoleId);
+	
+	/**
+	* Get role for specific employee
+	* 
+	* @param pass int($employeeId)
+	*/
+	public function getEmployeeRole($employeeId);
+	
+	/**
+	* Handle specific business role data update
+	*
+	* @param none
+	* @return business role info 
+	*/
+	public function updateBusinessRole(BusinessRole $businessRole);
+	
+	/**
+	* Handle specific business role data delete
+	*
+	* @param businessRoleId
+	* @return boolean 
+	*/
+	public function deleteBusinessRole($businessRoleId);
 
 }

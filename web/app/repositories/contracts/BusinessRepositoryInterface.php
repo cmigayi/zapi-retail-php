@@ -9,6 +9,8 @@ namespace App\Repositories\Contracts;
 * Contract to business repository
 */
 
+use App\Data\Business;
+
 interface BusinessRepositoryInterface{
 
 	/**	
@@ -17,7 +19,7 @@ interface BusinessRepositoryInterface{
 	* @param $business object
 	* @return Business object
 	*/
-	public function createBusiness($business);
+	public function createBusiness(Business $business);
 
 	/**	
 	* Fetch business
@@ -33,6 +35,22 @@ interface BusinessRepositoryInterface{
 	* @param int($businessOwnerId)
 	* @return businesses
 	*/
-	public function loadOwnerBusinesses($businessOwnerId);
+	public function loadOwnerBusinesses($ownerId);
+	
+	/**
+	* Handle business data update
+	*
+	* @param none
+	* @return array business info 
+	*/
+	public function updateBusiness(Business $business);
+	
+	/**
+	* Handle business data delete
+	*
+	* @param business_id
+	* @return boolean 
+	*/
+	public function deleteBusiness($businessId);
 
 }

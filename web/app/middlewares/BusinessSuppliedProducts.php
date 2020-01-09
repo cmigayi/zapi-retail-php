@@ -21,4 +21,8 @@ class BusinessSuppliedProducts{
 	public function getBusinessSuppliedProducts($businessId){
 		return $this->repo->loadBusinessSuppliedProducts($businessId);
 	}
+	
+	public function getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate){
+		return $this->repo->getBusinessTotalCostOfSuppliedStockBtwnDates($businessId, $startDate, $endDate);
+	}
 }

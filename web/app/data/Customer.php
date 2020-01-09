@@ -11,6 +11,7 @@ namespace App\Data;
 
 class Customer{
 	private $customerId;
+	private $businessId;
 	private $fname;
 	private $lname;
 	private $nationalId;
@@ -24,6 +25,14 @@ class Customer{
 
 	public function getCustomerId(){
 		return $this->customerId;
+	}
+	
+	public function setBusinessId($businessId){
+		$this->businessId = $businessId;
+	}
+
+	public function getBusinessId(){
+		return $this->businessId;
 	}
 
 	public function setFname($fname){

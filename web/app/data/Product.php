@@ -12,6 +12,8 @@ namespace App\Data;
 class Product{
 	private $productId;
 	private $productCartegoryId;
+	private $businessId;
+	private $employeeId;
 	private $productName;
 	private $productDesc;
 	private $price;
@@ -52,6 +54,32 @@ class Product{
 	*/
 	public function getProductCartegoryId(){
 		return $this->productCartegoryId;
+	}
+	
+	public function setEmployeeId($employeeId){
+		$this->employeeId = $employeeId;
+	}
+
+	public function getEmployeeId(){
+		return $this->employeeId;
+	}
+	
+	/**
+	* setter method
+	*
+	* @param int($id) 
+	*/
+	public function setBusinessId($id){
+		$this->businessId = $id;
+	}
+
+	/**
+	* getter method
+	*
+	* @return int
+	*/
+	public function getBusinessId(){
+		return $this->businessId;
 	}
 
 	/**
@@ -106,24 +134,6 @@ class Product{
 	*/
 	public function getPrice(){
 		return $this->price;
-	}
-
-	/**
-	* setter method
-	*
-	* @param int($createdBy)
-	*/
-	public function setCreatedBy($createdBy){
-		$this->createdBy = $createdBy;
-	}
-
-	/**
-	* getter method
-	*
-	* @return String
-	*/
-	public function getCreatedBy(){
-		return $this->createdBy;
 	}
 
 	/**
