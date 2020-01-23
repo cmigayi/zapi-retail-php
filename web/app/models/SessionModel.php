@@ -34,9 +34,11 @@ class SessionModel extends Database{
 		try{
 			/**
 			* Connect to PDO database 
-			*/
-			$this->pdoConfig();
+			*/			
+			parent::pdoConfig();
+
 		}catch(\Exception $e){
+			echo $e->getMessage();
 			//logger
 			$this->log->error("Error ".$e->getMessage());
 		}
@@ -53,27 +55,34 @@ class SessionModel extends Database{
 	* @return session data (Session)
 	*/
 	public function createSession(){
-		$this->passedData = array(
-				$this->session->getUserId(),
-				$this->session->getSessionString(),
-				$this->dateTime
-			);
+		$userId = $this->session->getUserId();		
+		$sessionString = $this->session->getSessionString();
 
 		$this->session = new Session();
-
-		try{
-			$this->pdo->beginTransaction();
-			$this->sql = "INSERT INTO sessions VALUES(null,?,?,?)";
-			$this->pdoPrepareAndExecute();
-			$sessionId = $this->pdo->lastInsertId();
-			$this->session = $this->getSession(1);
-			$this->pdo->commit();
-
-		}catch(\PDOException $e){
-			$this->pdo->rollback();
+		
+		// Get session (UserSession), if it exists
+		$this->session = $this->getUserSession($userId);		
+		if($this->session == null){
+			// Create new session
+			$this->passedData = array(
+				$userId,
+				$sessionString,
+				$this->dateTime
+			);
 			
-			//logger required!
-		}
+			try{
+				$this->pdo->beginTransaction();			
+				$this->sql = "INSERT INTO sessions VALUES(null,?,?,?)";
+				$this->pdoPrepareAndExecute();
+				$sessionId = $this->pdo->lastInsertId();
+				$this->session = $this->getSession($sessionId);
+				$this->pdo->commit();
+
+			}catch(\PDOException $e){
+				$this->pdo->rollback();	
+				//logger required!
+			}
+		}	
 		return $this->session;	
 	}
 	
@@ -84,20 +93,55 @@ class SessionModel extends Database{
 	* @return session data (Session)
 	*/
 	public function getSession($sessionId){
-		$this->sql = "SELECT * FROM sessions WHERE session_id=?";
 		$this->passedData = array($sessionId);
-		$this->result = $this->pdoFetchRow();
-
-		$this->session = new Session();
-
-		if($this->result == null){
-			$this->session = null;
-		}else{
+		$this->sql = "SELECT * FROM sessions WHERE session_id=?";
+		$this->result = $this->pdoFetchRow();		
+		
+		$this->session = null;
+		
+		if($this->result != null){
+			$this->session = new Session();
 			$this->session->setSessionId($this->result[0]['session_id']);
 			$this->session->setUserId($this->result[0]['user_id']);
 			$this->session->setSessionString($this->result[0]['session_string']);
 			$this->session->setDateTime($this->result[0]['date_time']);
 		}
 		return $this->session;
+	}
+	
+	/**
+	* Get user session based on user_id
+	*
+	* @param int($userId) 
+	* @return session
+	*/
+	public function getUserSession($userId){
+		$this->passedData = array($userId);		
+		$this->passedData = array($userId);		
+		$this->sql = "SELECT * FROM sessions WHERE user_id=?";
+		$this->result = $this->pdoFetchRow();
+		
+		$this->session = null;
+		
+		if($this->result != null){
+			$this->session = new Session();
+			$this->session->setSessionId($this->result[0]['session_id']);
+			$this->session->setUserId($this->result[0]['user_id']);
+			$this->session->setSessionString($this->result[0]['session_string']);
+			$this->session->setDateTime($this->result[0]['date_time']);			
+		}
+		return $this->session;
+	}
+	
+	
+	public function deleteUserSession($userId){
+		$this->passedData = array($userId);
+		try{
+			$this->sql = "DELETE FROM sessions WHERE user_id=?";
+			$this->result = $this->pdoPrepareAndExecute();
+		}catch(\PDOException $e){			
+			//logger required!
+		}
+		return $this->result;
 	}
 }	

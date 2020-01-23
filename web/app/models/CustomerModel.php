@@ -29,6 +29,7 @@ class CustomerModel extends Database{
 			*/
 			$this->pdoConfig();
 		}catch(\Exception $e){
+			echo $e->getMessage();
 			return $e->getMessage();
 		}
 	}

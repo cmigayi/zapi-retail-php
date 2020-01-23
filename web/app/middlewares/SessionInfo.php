@@ -23,11 +23,7 @@ class SessionInfo{
 		return $this->repo->getSession($sessionId);
 	}
 	
-	public function updateSession(Session $session){
-		return $this->repo->updateSession($session);
-	}
-	
-	public function deleteSession($sessionId){
-		return $this->repo->deleteSession($sessionId);
+	public function deleteUserSession($userId){
+		return $this->repo->deleteUserSession($userId);
 	}
 }

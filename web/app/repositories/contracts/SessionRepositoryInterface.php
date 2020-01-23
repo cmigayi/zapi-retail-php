@@ -26,4 +26,11 @@ interface SessionRepositoryInterface{
 	* @param pass int($sessionId) to identify session
 	*/
 	public function getSession(int $sessionId);
+	
+	/**
+	* Delete user session
+	* 
+	* @param pass int($userId) to identify session
+	*/
+	public function deleteUserSession(int $userId);
 }

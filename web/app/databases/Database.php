@@ -11,8 +11,8 @@ namespace App\Databases;
 
 class Database{
 	private $host;
-	private $username;
-	private $password;
+	private $config_username;
+	private $config_password;
 	public $database;
 
 	/**
@@ -57,23 +57,23 @@ class Database{
 	* @return void
 	*/
 	public function pdoConfig(){
-		$config = include_once("../Config.php");
-
+		$config = include("../Config.php");
+		
 		$this->host = $config['host']; 
-		$this->username = $config['username']; 
-		$this->password = $config['password']; 
+		$this->config_username = $config['username']; 
+		$this->config_password = $config['password']; 
 		$this->database = $config['database'];
 		$this->charset = "utf8mb4";
 
 		try{
-			$dsn = "mysql:host=".$this->host.";dbname=".$this->database.";charset=".$this->charset;
+			$dsn = "mysql:host=".$this->host.";dbname=".$this->database.";charset=".$this->charset;			
 			$options = [
 			    \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
 			    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
 			    \PDO::ATTR_EMULATE_PREPARES   => false,
 			];
 
-			$this->pdo = new \PDO($dsn, $this->username, $this->password, $options);
+			$this->pdo = new \PDO($dsn, $this->config_username, $this->config_password, $options);			
 
 		}catch(\PDOException $e){
 			throw new \PDOException("Connection failed! ".$e->getMessage());

@@ -44,6 +44,7 @@ trait Session{
 
 	public function destroySession(){
 		unset($_SESSION['user_id']);
+		unset($_SESSION['sess_id']);
 		unset($_SESSION['fname']);
 		unset($_SESSION['lname']);
 		unset($_SESSION['email']);
@@ -53,5 +54,6 @@ trait Session{
 		if(session_destroy()){
 			return true;
 		}
+		return false;
 	}
 } 

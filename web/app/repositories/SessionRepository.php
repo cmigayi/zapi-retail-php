@@ -41,4 +41,13 @@ class SessionRepository implements SessionRepositoryInterface{
 	public function getSession(int $sessionId){
 		return $this->sessionModel->getSession($sessionId);
 	}
+	
+	/**
+	* Delete user session
+	* 
+	* @param pass int($userId) to identify session
+	*/
+	public function deleteUserSession(int $userId){
+		return $this->sessionModel->deleteUserSession($userId);
+	}
 }

@@ -181,9 +181,7 @@ class BusinessModel extends Database{
 		try{
 			$this->sql = "DELETE FROM businesses WHERE business_id=?";
 			$this->result = $this->pdoPrepareAndExecute();
-		}catch(\PDOException $e){
-			$this->pdo->rollback();
-			
+		}catch(\PDOException $e){			
 			//logger required!
 		}
 		return $this->result;		

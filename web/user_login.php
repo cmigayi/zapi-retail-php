@@ -54,57 +54,53 @@ $passWord = $password->validPassword();
 * set data
 */
 $user->setUsername($userName);
-$user->setPassword($userPassword);
+$user->setPassword($passWord);
 
-$session->setUserId(1);
-			$session->setSessionString("sdasdsadsad");
-			$addSession->createSession($session);		
-			
+$main["content"] = array();
+$content["info"] = array();
+$content["user"] = array();
 
-/* if(empty($userName)){
-	//Validation failed
-}else{	
-	//get user	
-	$user = $userLogin->userLogin($user);
+$info = array();
+$data = array();
 
-	// Count records found
-	$recordCount = 0;
+$info["status"] = false;
+$info["records"] = 0;
+$info["errors"] = "";
 
-	$main["content"] = array();
-	$content["info"] = array();
-	$content["user"] = array();
+$userSession = null;
 
-	$info = array();
-	$data = array();	
-	if($user == null){ 
-		$info["status"] = false;
-		$info["records"] = 0;
-	}else{
-		$userSession = $user->getUserSession();
-		$userId = $user->getUserId();
-		if($userSession == null){
-			
-		}else{
-			// Add user session in the database
-			$session->setUserId($userId);
-			$session->setSessionString($userSession);
-			$addSession->createSession($session);
-			
-			// Prepare data for json
-			$info["status"] = true;
-			$info["records"] = 1;
-			$info["session"] = $userSession;
-			
-			$data["user_id"] = $userId;
-			$data["fname"] = $user->getFname();	
-			$data["lname"] = $user->getLname();	
-		}				
-	}
-	array_push($content["info"],$info);
-	array_push($content["user"],$data);
+//get user	
+$user = $userLogin->userLogin($user);	
+if($user != null){
+	$userSession = $user->getUserSession();
+	$userId = $user->getUserId(); 					
+}else{
+	$info["errors"] .= "Username or password is wrong,";
+}
+	
+if($userSession != null){		
+	// Add user session in the database
+	$session->setUserId($userId);
+	$session->setSessionString($userSession);		
+}
 
-	array_push($main["content"],$content);
+$session = $addSession->createSession($session);
+if($session != null){
+	// Prepare data for json
+	$info["status"] = true;
+	$info["records"] = 1;
+	$info["session"] = $session->getSessionString();
+				
+	$data["user_id"] = $session->getUserId();
+	/* $data["fname"] = $session->getFname();	
+	$data["lname"] = $session->getLname(); */
+}else{
+	$info["errors"] .= "Session not created,";
+}
 
-	$json = json_encode($main);
-	echo $json; */	
-//}
+array_push($content["info"],$info);
+array_push($content["user"],$data);
+
+array_push($main["content"],$content);
+
+echo json_encode($main);
