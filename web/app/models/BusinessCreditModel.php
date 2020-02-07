@@ -21,8 +21,8 @@ class BusinessCreditModel extends Database{
 
 	public function __construct(){
 		/**
-		* Date and time generated for date and time record creation 
-		*/		
+		* Date and time generated for date and time record creation
+		*/
 		$this->dateTime = date("Y-m-d h:i:sa");
 
 		/**
@@ -33,7 +33,7 @@ class BusinessCreditModel extends Database{
 
 		try{
 			/**
-			* Connect to PDO database 
+			* Connect to PDO database
 			*/
 			$this->pdoConfig();
 		}catch(\Exception $e){
@@ -77,13 +77,13 @@ class BusinessCreditModel extends Database{
 			echo $e;
 			//logger required!
 		}
-		return $this->businessCredit;		
-	}	
+		return $this->businessCredit;
+	}
 
 	/**
 	* Handle individual BusinessCredit data retrieval based on businessCreditId
 	*
-	* @param int($businessCreditId) 
+	* @param int($businessCreditId)
 	* @return businessCredit data (BusinessCredit)
 	*/
 	public function getBusinessCredit($businessCreditId){
@@ -92,7 +92,7 @@ class BusinessCreditModel extends Database{
 		$this->result = $this->pdoFetchRow();
 
 		$this->businessCredit = new BusinessCredit();
-		
+
 		if($this->result == null){
 			$this->businessCredit = null;
 		}else{
@@ -110,7 +110,7 @@ class BusinessCreditModel extends Database{
 	/**
 	* Handle supplier businessCredit data retrieval based on businessCreditId
 	*
-	* @param int($supplierId) 
+	* @param int($supplierId)
 	* @return businessCredit data (BusinessCredit)
 	*/
 	public function getSupplierBusinessCredit($supplierId){
@@ -122,7 +122,7 @@ class BusinessCreditModel extends Database{
 		$this->result = $this->pdoFetchRow();
 
 		$this->businessCredit = new BusinessCredit();
-		
+
 		if($this->result == null){
 			$this->businessCredit = null;
 		}else{
@@ -136,11 +136,11 @@ class BusinessCreditModel extends Database{
 		}
 		return $this->businessCredit;
 	}
-	
+
 	/**
 	* Handle customer businessCredit data retrieval based on businessCreditId
 	*
-	* @param int($customerId) 
+	* @param int($customerId)
 	* @return businessCredit data (BusinessCredit)
 	*/
 	public function getCustomerBusinessCredit($customerId){
@@ -152,7 +152,7 @@ class BusinessCreditModel extends Database{
 		$this->result = $this->pdoFetchRow();
 
 		$this->businessCredit = new BusinessCredit();
-		
+
 		if($this->result == null){
 			$this->businessCredit = null;
 		}else{
@@ -166,17 +166,17 @@ class BusinessCreditModel extends Database{
 		}
 		return $this->businessCredit;
 	}
-	
+
 	/**
 	* Handle businessCredits data retrieval
 	*
 	* @param int($businessId)
-	* @return array businessCredits info 
+	* @return array businessCredits info
 	*/
 	public function getBusinessCredits($businessId){
 		$this->passedData = array($businessId);
 
-		try{						
+		try{
 			$this->sql = "SELECT * FROM business_credits WHERE business_id=?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
@@ -185,12 +185,12 @@ class BusinessCreditModel extends Database{
 		}
 		return $this->result;
 	}
-	
+
 	/**
 	* Handle businessCredit data update
 	*
 	* @param none
-	* @return array businessCredit info 
+	* @return array businessCredit info
 	*/
 	public function updateBusinessCredit(){
 		$businessCreditId = $this->businessCredit->getBusinessCreditId();
@@ -210,17 +210,17 @@ class BusinessCreditModel extends Database{
 
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->businessCredit;		
+		return $this->businessCredit;
 	}
-	
+
 	/**
 	* Handle businessCredit data delete
 	*
 	* @param businessCreditId
-	* @return boolean 
+	* @return boolean
 	*/
 	public function deleteBusinessCredit($businessCreditId){
 		$this->passedData = array($businessCreditId);
@@ -229,9 +229,9 @@ class BusinessCreditModel extends Database{
 			$this->result = $this->pdoPrepareAndExecute();
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->result;		
+		return $this->result;
 	}
 }

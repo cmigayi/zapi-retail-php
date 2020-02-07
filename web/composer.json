@@ -1,9 +1,8 @@
 {
-    "name": "codevated/zapi",
-    "description": "Manage retailers data between database and any client",
+    "name": "cilo/zapi",
     "authors": [
         {
-            "name": "cilo",
+            "name": "cmigayi",
             "email": "migayicecil@gmail.com"
         }
     ],

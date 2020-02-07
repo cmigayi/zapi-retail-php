@@ -156,4 +156,37 @@ class UserModel extends Database{
 		}
 		return $this->user;
 	}
+	
+	/**
+	* Handle user data update
+	*
+	* @param none
+	* @return user info 
+	*/
+	public function updateUser(){
+		$userId = $this->user->getUserId();
+		$this->passedData = array(
+				$this->user->getFname(),
+				$this->user->getLname(),
+				$this->user->getEmail(),
+				$this->user->getPhone(),	
+				$userId
+			);
+
+		$this->user = new User();
+
+		try{
+			$this->pdo->beginTransaction();
+			$this->sql = "UPDATE users SET fname=?, lname=?, email=?, phone=? WHERE user_id=?";
+			$this->pdoPrepareAndExecute();
+			$this->user = $this->getUser($userId);
+			$this->pdo->commit();
+
+		}catch(\PDOException $e){
+			$this->pdo->rollback();
+			
+			//logger required!
+		}
+		return $this->user;		
+	}
 }

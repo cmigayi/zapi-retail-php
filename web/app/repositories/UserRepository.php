@@ -55,4 +55,14 @@ class UserRepository implements UserRepositoryInterface{
 		$this->userModel->setData($this->user);
 		return $this->userModel->getUserByUsernameAndPassword();
 	}
+	
+	/**
+	* Update user
+	* 
+	* @param pass user data to be stored
+	*/
+	public function updateUser(User $user){
+		$this->userModel->setData($user);
+		return $this->userModel->updateUser();
+	}
 }

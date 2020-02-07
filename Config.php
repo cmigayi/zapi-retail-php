@@ -1,9 +1,8 @@
 <?php
 
 return [
-	"host" => "127.0.0.1",
-	"username" => "root",
-	"password" => "",
+	"host" => "localhost",
+	"username" => "cilo",
+	"password" => "cilo2019",
 	"database" => "zapi"
 ];
-

@@ -33,4 +33,11 @@ interface UserRepositoryInterface{
 	* @param pass String($email) and String($password) to identify user
 	*/
 	public function getUserByUsernameAndPwd(String $email, String $password);
+	
+	/**
+	* Update user
+	* 
+	* @param pass user data to be stored
+	*/
+	public function updateUser(User $user);
 }

@@ -5,18 +5,18 @@ require_once("vendor/autoload.php");
 
 use App\Data\User;
 use App\Data\Session;
-use App\Repositories\UserRepository; 
-use App\Repositories\SessionRepository; 
+use App\Repositories\UserRepository;
+use App\Repositories\SessionRepository;
 use App\Middlewares\UserLogin;
 use App\Middlewares\AddSession;
 use App\Common\Username;
 use App\Common\Password;
 
-/* $verb = $_SERVER['REQUEST_METHOD'];
+$verb = $_SERVER['REQUEST_METHOD'];
 $url_pieces = explode('/', $_SERVER['PATH_INFO']);
-if($url_pieces[1] != "zapi-v1"){	
+if($url_pieces[1] != "zapi-v1"){
 	return http_response_code(404);
-} */
+}
 
 /**
 * initialize objects
@@ -69,19 +69,19 @@ $info["errors"] = "";
 
 $userSession = null;
 
-//get user	
-$user = $userLogin->userLogin($user);	
+//get user
+$user = $userLogin->userLogin($user);
 if($user != null){
 	$userSession = $user->getUserSession();
-	$userId = $user->getUserId(); 					
+	$userId = $user->getUserId();
 }else{
 	$info["errors"] .= "Username or password is wrong,";
 }
-	
-if($userSession != null){		
+
+if($userSession != null){
 	// Add user session in the database
 	$session->setUserId($userId);
-	$session->setSessionString($userSession);		
+	$session->setSessionString($userSession);
 }
 
 $session = $addSession->createSession($session);
@@ -90,9 +90,9 @@ if($session != null){
 	$info["status"] = true;
 	$info["records"] = 1;
 	$info["session"] = $session->getSessionString();
-				
+
 	$data["user_id"] = $session->getUserId();
-	/* $data["fname"] = $session->getFname();	
+	/* $data["fname"] = $session->getFname();
 	$data["lname"] = $session->getLname(); */
 }else{
 	$info["errors"] .= "Session not created,";

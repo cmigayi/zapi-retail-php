@@ -5,14 +5,14 @@ use App\Middlewares\UserInfo;
 use App\Repositories\UserRepository;
 use App\Data\User;
 
-/* $verb = $_SERVER['REQUEST_METHOD'];
+$verb = $_SERVER['REQUEST_METHOD'];
 $url_pieces = explode('/', $_SERVER['PATH_INFO']);
 if($url_pieces[1] != "zapi-v1"){	
 	return http_response_code(404);
-} */
+}
 
-//$userId = $url_pieces[3];
-$userId = 116;
+$userId = $url_pieces[3];
+//$userId = 116;
 
 $userRepo = new UserRepository();
 
@@ -36,8 +36,8 @@ if($user == null){
 
 	$data = array();
 	$data['user_id'] = $user->getUserId();
-	$data['firstname'] = $user->getFname();
-	$data['lastname'] = $user->getLname();
+	$data['fname'] = $user->getFname();
+	$data['lname'] = $user->getLname();
 	$data['email'] = $user->getEmail();
 	$data['phone'] = $user->getPhone();
 	$data['username'] = $user->getUsername();
