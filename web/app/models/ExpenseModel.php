@@ -21,8 +21,8 @@ class ExpenseModel extends Database{
 
 	public function __construct(){
 		/**
-		* Date and time generated for date and time record creation 
-		*/		
+		* Date and time generated for date and time record creation
+		*/
 		$this->dateTime = date("Y-m-d h:i:sa");
 
 		/**
@@ -33,7 +33,7 @@ class ExpenseModel extends Database{
 
 		try{
 			/**
-			* Connect to PDO database 
+			* Connect to PDO database
 			*/
 			$this->pdoConfig();
 		}catch(\Exception $e){
@@ -76,13 +76,13 @@ class ExpenseModel extends Database{
 			echo $e;
 			//logger required!
 		}
-		return $this->expense;		
-	}	
+		return $this->expense;
+	}
 
 	/**
 	* Handle individual expense data retrieval based on expenseId
 	*
-	* @param int($expenseId) 
+	* @param int($expenseId)
 	* @return expense data (Expense)
 	*/
 	public function getExpense($expenseId){
@@ -91,7 +91,7 @@ class ExpenseModel extends Database{
 		$this->result = $this->pdoFetchRow();
 
 		$this->expense = new Expense();
-		
+
 		if($this->result == null){
 			$this->expense = null;
 		}else{
@@ -104,17 +104,17 @@ class ExpenseModel extends Database{
 		}
 		return $this->expense;
 	}
-	
+
 	/**
 	* Handle expenses data retrieval
 	*
 	* @param int($businessId)
-	* @return array expenses info 
+	* @return array expenses info
 	*/
 	public function getBusinessExpenses($businessId){
 		$this->passedData = array($businessId);
 
-		try{						
+		try{
 			$this->sql = "SELECT * FROM expenses WHERE business_id=?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
@@ -123,12 +123,12 @@ class ExpenseModel extends Database{
 		}
 		return $this->result;
 	}
-	
+
 	/**
 	* Handle recurring expenses data retrieval
 	*
 	* @param int($businessId)
-	* @return array expenses info 
+	* @return array expenses info
 	*/
 	public function getBusinessRecurringExpenses($businessId){
 		$this->passedData = array(
@@ -136,7 +136,7 @@ class ExpenseModel extends Database{
 			"Recurring"
 		);
 
-		try{						
+		try{
 			$this->sql = "SELECT * FROM expenses WHERE business_id=? AND expense_type=?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
@@ -145,12 +145,12 @@ class ExpenseModel extends Database{
 		}
 		return $this->result;
 	}
-	
+
 	/**
 	* Handle non-recurring expenses data retrieval
 	*
 	* @param int($businessId)
-	* @return array expenses info 
+	* @return array expenses info
 	*/
 	public function getBusinessNonRecurringExpenses($businessId){
 		$this->passedData = array(
@@ -158,7 +158,7 @@ class ExpenseModel extends Database{
 			"Non-recurring"
 		);
 
-		try{						
+		try{
 			$this->sql = "SELECT * FROM expenses WHERE business_id=? AND expense_type=?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
@@ -167,16 +167,17 @@ class ExpenseModel extends Database{
 		}
 		return $this->result;
 	}
-	
+
 	/**
 	* Handle expense data update
 	*
 	* @param none
-	* @return array expense info 
+	* @return array expense info
 	*/
 	public function updateExpense(){
 		$expenseId = $this->expense->getExpenseId();
 		$this->passedData = array(
+				$this->expense->getExpenseItem(),
 				$this->expense->getAmount(),
 				$expenseId
 			);
@@ -185,24 +186,24 @@ class ExpenseModel extends Database{
 
 		try{
 			$this->pdo->beginTransaction();
-			$this->sql = "UPDATE expenses SET amount=? WHERE expense_id=?";
+			$this->sql = "UPDATE expenses SET expense_item=?, amount=? WHERE expense_id=?";
 			$this->pdoPrepareAndExecute();
 			$this->expense = $this->getExpense($expenseId);
 			$this->pdo->commit();
 
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->expense;		
+		return $this->expense;
 	}
-	
+
 	/**
 	* Handle expense data delete
 	*
 	* @param expenseId
-	* @return boolean 
+	* @return boolean
 	*/
 	public function deleteExpense($expenseId){
 		$this->passedData = array($expenseId);
@@ -211,9 +212,9 @@ class ExpenseModel extends Database{
 			$this->result = $this->pdoPrepareAndExecute();
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->result;		
+		return $this->result;
 	}
 }

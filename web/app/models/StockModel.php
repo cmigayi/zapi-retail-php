@@ -21,8 +21,8 @@ class StockModel extends Database{
 
 	public function __construct(){
 		/**
-		* Date and time generated for date and time record creation 
-		*/		
+		* Date and time generated for date and time record creation
+		*/
 		$this->dateTime = date("Y-m-d h:i:sa");
 
 		/**
@@ -33,7 +33,7 @@ class StockModel extends Database{
 
 		try{
 			/**
-			* Connect to PDO database 
+			* Connect to PDO database
 			*/
 			$this->pdoConfig();
 		}catch(\Exception $e){
@@ -61,7 +61,7 @@ class StockModel extends Database{
 			$this->sql = "INSERT INTO product_stocks VALUES(null,?,?,?,?)";
 			$this->pdoPrepareAndExecute();
 			$productStockId = $this->pdo->lastInsertId();
-			$this->productStock = $this->getStock($productStockId);	
+			$this->productStock = $this->getStock($productStockId);
 			$this->pdo->commit();
 
 		}catch(\PDOException $e){
@@ -96,12 +96,12 @@ class StockModel extends Database{
 		}
 		return $this->productStock;
 	}
-	
+
 	public function getBusinessStockTotalAmount($businessId){
 		$this->passedData = array($businessId);
-		$this->sql = "SELECT SUM(product_stocks.quantity * products_supplied.unit_price) AS amount FROM product_stocks LEFT JOIN products_supplied ON 
+		$this->sql = "SELECT SUM(product_stocks.quantity * products_supplied.unit_price) AS amount FROM product_stocks LEFT JOIN products_supplied ON
 		product_stocks.product_id = products_supplied.product_id WHERE business_id = ?";
-		
+
 		try{
 			$this->result = $this->pdoFetchRow();
 			if($this->result == null){
@@ -120,7 +120,8 @@ class StockModel extends Database{
 		$this->passedData = array($businessId);
 
 		try{
-			$this->sql = "SELECT * FROM product_stocks LEFT JOIN products ON product_stocks.product_id = products.product_id WHERE product_stocks.business_id = ?";
+			$this->sql = "SELECT * FROM product_stocks LEFT JOIN products ON "+
+			"product_stocks.product_id = products.product_id WHERE product_stocks.business_id = ?";
 			$this->result = $this->pdoFetchRows();
 		}catch(\PDOException $e){
 			//logger
@@ -128,12 +129,12 @@ class StockModel extends Database{
 		}
 		return $this->result;
 	}
-	
+
 	/**
 	* Handle stock data update
 	*
 	* @param none
-	* @return array stock info 
+	* @return array stock info
 	*/
 	public function updateStock(){
 		$productStockId = $this->productStock->getStockId();
@@ -153,17 +154,17 @@ class StockModel extends Database{
 
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->productStock;		
+		return $this->productStock;
 	}
-	
+
 	/**
 	* Handle stock data delete
 	*
 	* @param stockId
-	* @return boolean 
+	* @return boolean
 	*/
 	public function deleteStock($productStockId){
 		$this->passedData = array($productStockId);
@@ -172,9 +173,9 @@ class StockModel extends Database{
 			$this->result = $this->pdoPrepareAndExecute();
 		}catch(\PDOException $e){
 			$this->pdo->rollback();
-			
+
 			//logger required!
 		}
-		return $this->result;		
+		return $this->result;
 	}
 }
